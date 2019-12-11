@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="613dp"
+    android:layout_height="295dp"
+    android:layout_margin="13dp"
+    android:background="@mipmap/icon_c_bg"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cusom_swipe_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginLeft="54dp"
+        android:layout_marginRight="54dp"
+        android:layout_marginTop="18dp"></android.support.v7.widget.RecyclerView>
+
+    <com.lx.lxyd.view.PageIndicatorView
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
+</LinearLayout>
