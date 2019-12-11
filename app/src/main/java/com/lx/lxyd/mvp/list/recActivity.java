@@ -141,8 +141,6 @@ public class recActivity extends AppCompatActivity {
                         }
                     });
         }
-
-
     }
 
     private void initData() {

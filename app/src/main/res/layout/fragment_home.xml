@@ -9,6 +9,7 @@
         android:layout_marginTop="26dp"
         android:src="@mipmap/icon_title" />
     <com.lx.lxyd.view.PageRecyclerView
+        android:descendantFocusability="afterDescendants"
         android:id="@+id/cusom_swipe_view"
         android:layout_width="match_parent"
         android:layout_height="164dp"

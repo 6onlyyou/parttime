@@ -11,7 +11,8 @@
         android:layout_height="220dp"
         android:layout_marginLeft="54dp"
         android:layout_marginRight="54dp"
-        android:layout_marginTop="18dp"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="18dp"
+        android:descendantFocusability="afterDescendants"></android.support.v7.widget.RecyclerView>
 
     <com.lx.lxyd.view.PageIndicatorView
         android:id="@+id/indicator"

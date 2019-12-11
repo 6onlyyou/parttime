@@ -103,10 +103,16 @@ public class ColFragment extends Fragment {
             return;
         }
         dataList = new ArrayList<>();
-        for (int i = 0; i < colBeanList.size(); i++) {
+//        for (int i = 0; i < colBeanList.size(); i++) {
+//            colBean colBean = new colBean();
+//            colBean.setTitle(colBeanList.get(i).getTitle());
+//            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
+//            dataList.add(colBean);
+//        }
+        for (int i = 0; i < 5; i++) {
             colBean colBean = new colBean();
-            colBean.setTitle(colBeanList.get(i).getTitle());
-            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
+            colBean.setTitle("2");
+            colBean.setThumbnail_Url("2");
             dataList.add(colBean);
         }
     }
