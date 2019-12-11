@@ -34,7 +34,7 @@ public class InfoActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView = null;
     private FilterBureauAdapter adapter;
     private Button info_play, info_col;
-    private infoData mcolBean =null;
+    private infoData mcolBean = null;
     private List<colBean> dataList = null;
     private List<infoData> infoDataList = new ArrayList<>();
 
@@ -85,7 +85,7 @@ public class InfoActivity extends AppCompatActivity {
                 }
                 Intent i = new Intent(InfoActivity.this, PlayerActivity.class);
                 i.putExtra("info", mcolBean);
-                i.putExtra("flag","0");
+                i.putExtra("flag", "0");
                 startActivity(i);
             }
         });
@@ -119,7 +119,8 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
     }
-    public  void  setView(){
+
+    public void setView() {
         Window window = this.getWindow();
         ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
@@ -139,6 +140,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         }
     }
+
     public void getData() {
 
         infoDataList = DataSupport.where("topId=?", mcolBean.getTopId()).limit(5).offset(0).find(infoData.class);

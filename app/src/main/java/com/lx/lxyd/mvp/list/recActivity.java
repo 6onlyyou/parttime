@@ -167,11 +167,9 @@ public class recActivity extends AppCompatActivity {
     }
 
     private void initViewPage() {
-//添加适配器getSupportFragmentManager
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                //创建实例
                 Fragment fragment = new Fragment();
                 if (fragment != null) {
                     switch (position) {
@@ -195,17 +193,11 @@ public class recActivity extends AppCompatActivity {
             }
         });
 
-        //ViewPager关联到Tablayout中
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
-        //设置tabLayout
-
         for (int i = 0; i < 3; i++) {
             tabLayout.getTabAt(i).setCustomView(getTabView(i));
         }
-
-
-        //监听tabLayout选中
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -224,16 +216,17 @@ public class recActivity extends AppCompatActivity {
         });
 
     }
+
     private void changeTabSelect(TabLayout.Tab tab) {
         View view = tab.getCustomView();
         TextView textView = view.findViewById(R.id.home_Tico);
         ImageView iv = view.findViewById(R.id.home_Iico);
-        switch(tab.getPosition()){
-            case 0 :
+        switch (tab.getPosition()) {
+            case 0:
                 iv.setImageResource(R.mipmap.home_pico);
                 viewPager.setCurrentItem(0);
                 break;
-            case 1 :
+            case 1:
                 iv.setImageResource(R.mipmap.home_colun);
                 viewPager.setCurrentItem(1);
                 break;
@@ -241,32 +234,28 @@ public class recActivity extends AppCompatActivity {
                 iv.setImageResource(R.mipmap.home_timun);
                 viewPager.setCurrentItem(2);
                 break;
-            default :
+            default:
 
         }
-
-
-
         textView.setTextColor(Color.parseColor("#FFFFFF"));
-
         textView.setTextSize(12);
-//        textView.getPaint().setFakeBoldText(true);
     }
+
     private void changeTabNormal(TabLayout.Tab tab) {
         View view = tab.getCustomView();
         TextView textView = view.findViewById(R.id.home_Tico);
         ImageView iv = view.findViewById(R.id.home_Iico);
-        switch(tab.getPosition()){
-            case 0 :
+        switch (tab.getPosition()) {
+            case 0:
                 iv.setImageResource(R.mipmap.home_ico);
                 break;
-            case 1 :
+            case 1:
                 iv.setImageResource(R.mipmap.home_col);
                 break;
             case 2:
                 iv.setImageResource(R.mipmap.home_tim);
                 break;
-            default :
+            default:
         }
         textView.setTextColor(Color.parseColor("#9b9b9b"));
         textView.setTextSize(12);
