@@ -90,7 +90,7 @@ public class TimeFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent i = new Intent(getActivity(), PlayerActivity.class);
                 i.putExtra("info", hisDataList.get(position));
-                i.putExtra("flag", "2");
+                i.putExtra("flag", "1");
                 startActivity(i);
             }
 

@@ -33,7 +33,9 @@ public class PlayerActivity extends AppCompatActivity {
             mcolBean = i.getParcelableExtra("info");
         }
 
-
+        if (mcolBean.getAudio_url() == null) {
+            return;
+        }
         JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
         jzVideoPlayerStandard.setUp(mcolBean.getAudio_url(),
                 JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
