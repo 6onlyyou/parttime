@@ -8,9 +8,10 @@
     >
 
     <LinearLayout
+        android:id="@+id/col_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/col_selector"
+        android:background="@drawable/bead_bg"
         android:orientation="vertical">
 
         <ImageView

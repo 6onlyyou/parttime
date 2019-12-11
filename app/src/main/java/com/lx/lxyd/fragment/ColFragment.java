@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.lx.lxyd.R;
 import com.lx.lxyd.adapter.FilterBureauAdapter;
 import com.lx.lxyd.adapter.GridSpacingItemDecoration;
@@ -93,8 +94,18 @@ public class ColFragment extends Fragment {
 
             }
         });
+        mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    view.findViewById(R.id.col_bg).setBackground(getActivity().getResources().getDrawable(R.drawable.beadun_bg));
+                }else{
+                    view.findViewById(R.id.col_bg).setBackground(getActivity().getResources().getDrawable(R.drawable.bead_bg));
+                }
+            }
+        });
         mRecyclerView.setAdapter(adapter);
-
+        mRecyclerView.requestFocus();//设置焦点选中
     }
 
     private void initData() {
