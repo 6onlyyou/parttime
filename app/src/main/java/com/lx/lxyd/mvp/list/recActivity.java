@@ -305,7 +305,6 @@ public class recActivity extends AppCompatActivity {
             } while (true);
         }
     }
-
     @Override
     protected void onResume() {
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {

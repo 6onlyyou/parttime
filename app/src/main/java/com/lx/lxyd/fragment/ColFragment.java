@@ -105,7 +105,6 @@ public class ColFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.requestFocus();//设置焦点选中
     }
 
     private void initData() {

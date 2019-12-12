@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setPageSize(3, 3);
         // 设置页间距
         mRecyclerView.setPageMargin(30);
+        mRecyclerView.requestFocus();
         // 设置数据
         mRecyclerView.setAdapter(myAdapter = mRecyclerView.new PageAdapter(dataList, new PageRecyclerView.CallBack() {
             @Override
