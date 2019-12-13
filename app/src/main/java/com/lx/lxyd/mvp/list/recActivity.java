@@ -83,6 +83,7 @@ public class recActivity extends AppCompatActivity {
             initViewPage();
             initData();
             mRecyclerView = findViewById(R.id.cusom_swipe_view);
+            mRecyclerView.setItemAnimator(null);
             mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3, GridLayoutManager.VERTICAL, false));
             mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(5, 3, Util.dip2px(this, 16), true));
             FilterBureauAdapter adapter1 = new FilterBureauAdapter(getApplicationContext(), dataList);

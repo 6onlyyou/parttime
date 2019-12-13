@@ -34,7 +34,10 @@ public class FilterBureauAdapter extends RecyclerView.Adapter<FilterBureauAdapte
         mList = list;
         mHolderMap = new HashMap<>();
     }
-
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
     @Override
     public FilterBureauHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.colitem, parent, false);

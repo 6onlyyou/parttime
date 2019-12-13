@@ -84,8 +84,7 @@
         android:layout_marginRight="54dp"
         android:layout_marginTop="18dp"
         android:background="@color/colorRed"
-        android:focusable="true"
-        android:descendantFocusability="afterDescendants"></android.support.v7.widget.RecyclerView>
+        ></android.support.v7.widget.RecyclerView>
     <android.support.v4.view.ViewPager
         android:id="@+id/home_Vpage"
         android:focusable="true"
