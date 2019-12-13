@@ -27,8 +27,8 @@
             app:tabBackground="@android:color/transparent"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/transparent"
-            android:nextFocusDown="@id/home_Vpage"
-            android:nextFocusUp="@id/home_Vpage"
+            android:nextFocusDown="@id/cusom_swipe_view"
+            android:nextFocusUp="@id/cusom_swipe_view"
             app:tabIndicatorHeight="1dp" />
 
         <TextView
@@ -72,8 +72,21 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/icon_line" />
 
-
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="sdadjlajkdl"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cusom_swipe_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginLeft="54dp"
+        android:layout_marginRight="54dp"
+        android:layout_marginTop="18dp"
+        android:background="@color/colorRed"
+        android:focusable="true"
+        android:descendantFocusability="afterDescendants"></android.support.v7.widget.RecyclerView>
     <android.support.v4.view.ViewPager
         android:id="@+id/home_Vpage"
         android:focusable="true"
@@ -81,6 +94,7 @@
         android:nextFocusUp="@id/mtab"
         android:layout_width="match_parent"
       android:layout_height="match_parent"
+        android:visibility="gone"
         />
 
 

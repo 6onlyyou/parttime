@@ -1,5 +1,6 @@
 package com.lx.lxyd.mvp.list;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,10 +27,14 @@ import android.widget.TextView;
 
 import com.heixiu.errand.net.RetrofitFactory;
 import com.lx.lxyd.R;
+import com.lx.lxyd.adapter.FilterBureauAdapter;
+import com.lx.lxyd.adapter.GridSpacingItemDecoration;
 import com.lx.lxyd.bean.allListData;
+import com.lx.lxyd.bean.colBean;
 import com.lx.lxyd.bean.homeData;
 import com.lx.lxyd.bean.infoData;
 import com.lx.lxyd.bean.maintainData;
+import com.lx.lxyd.constant.OnItemClickListener;
 import com.lx.lxyd.fragment.ColFragment;
 import com.lx.lxyd.fragment.HomeFragment;
 import com.lx.lxyd.fragment.TimeFragment;
@@ -35,10 +42,12 @@ import com.lx.lxyd.net.bean.ResponseBean;
 import com.lx.lxyd.net.service.ApiService;
 import com.lx.lxyd.utils.DataString;
 import com.lx.lxyd.utils.SPUtil;
+import com.lx.lxyd.utils.Util;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -54,7 +63,9 @@ public class recActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private String savePath;
-
+    List<colBean> colBeanList = null;
+    private List<colBean> dataList = null;
+    private RecyclerView mRecyclerView = null;
     private String[] str = {"首页", "收藏", "记录"};
     private int[] ints = {R.mipmap.home_ico, R.mipmap.home_col, R.mipmap.home_tim};
 
@@ -71,6 +82,35 @@ public class recActivity extends AppCompatActivity {
         if (SPUtil.getInt(recActivity.this, "first", 0) == 1) {
             initViewPage();
             initData();
+            mRecyclerView = findViewById(R.id.cusom_swipe_view);
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3, GridLayoutManager.VERTICAL, false));
+            mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(5, 3, Util.dip2px(this, 16), true));
+            FilterBureauAdapter adapter1 = new FilterBureauAdapter(getApplicationContext(), dataList);
+            adapter1.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent i = new Intent(recActivity.this, PlayerActivity.class);
+                    i.putExtra("info",dataList.get(position) );
+                    i.putExtra("flag","1");
+                    startActivity(i);
+                }
+
+                @Override
+                public void onItemLongClick(View view, int position) {
+
+                }
+            });
+            mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if(b){
+                        view.findViewById(R.id.col_bg).setBackground(getResources().getDrawable(R.drawable.beadun_bg));
+                    }else{
+                        view.findViewById(R.id.col_bg).setBackground(getResources().getDrawable(R.drawable.bead_bg));
+                    }
+                }
+            });
+            mRecyclerView.setAdapter(adapter1);
         } else {
             DataSupport.deleteAll(allListData.class);
             DataSupport.deleteAll(maintainData.class);
@@ -133,6 +173,7 @@ public class recActivity extends AppCompatActivity {
                             SPUtil.putInt(recActivity.this, "first", 1);
                             initViewPage();
                             initData();
+                            text(View.inflate(recActivity.this, R.layout.activity_list, null));
                         }
                     }, new Consumer<Throwable>() {
                         @Override
@@ -141,8 +182,16 @@ public class recActivity extends AppCompatActivity {
                         }
                     });
         }
-    }
 
+
+
+
+
+
+    }
+    private void text(View view){
+
+    }
     private void initData() {
         Window window = this.getWindow();
         ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
@@ -161,6 +210,25 @@ public class recActivity extends AppCompatActivity {
                 lp.topMargin -= statusBarHeight;
                 mChildView.setLayoutParams(lp);
             }
+        }
+
+
+        colBeanList = DataSupport.findAll(colBean.class);
+        if (colBeanList == null) {
+            return;
+        }
+        dataList = new ArrayList<>();
+//        for (int i = 0; i < colBeanList.size(); i++) {
+//            colBean colBean = new colBean();
+//            colBean.setTitle(colBeanList.get(i).getTitle());
+//            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
+//            dataList.add(colBean);
+//        }
+        for (int i = 0; i < 5; i++) {
+            colBean colBean = new colBean();
+            colBean.setTitle("2");
+            colBean.setThumbnail_Url("2");
+            dataList.add(colBean);
         }
     }
 
