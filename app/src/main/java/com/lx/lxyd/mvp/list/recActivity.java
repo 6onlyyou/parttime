@@ -60,7 +60,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class recActivity extends AppCompatActivity {
     private TextView home_Ttime, home_Ttim;
-    private TabLayout tabLayout;
+//    private TabLayout tabLayout;
     private ViewPager viewPager;
     private String savePath;
     List<colBean> colBeanList = null;
@@ -74,7 +74,7 @@ public class recActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         new TimeThread().start();
-        tabLayout = findViewById(R.id.mtab);
+//        tabLayout = findViewById(R.id.mtab);
         viewPager = findViewById(R.id.home_Vpage);
         home_Ttim = (TextView) findViewById(R.id.home_Ttim);
         home_Ttime = (TextView) findViewById(R.id.home_Ttime);
@@ -259,27 +259,27 @@ public class recActivity extends AppCompatActivity {
             }
         });
 
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(0);
-        for (int i = 0; i < 3; i++) {
-            tabLayout.getTabAt(i).setCustomView(getTabView(i));
-        }
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                changeTabSelect(tab);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                changeTabNormal(tab);
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+//        tabLayout.setupWithViewPager(viewPager);
+//        viewPager.setCurrentItem(0);
+//        for (int i = 0; i < 3; i++) {
+//            tabLayout.getTabAt(i).setCustomView(getTabView(i));
+//        }
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                changeTabSelect(tab);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                changeTabNormal(tab);
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
     }
 

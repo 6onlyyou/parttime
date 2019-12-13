@@ -27,8 +27,7 @@
             app:tabBackground="@android:color/transparent"
             app:tabGravity="fill"
             app:tabIndicatorColor="@android:color/transparent"
-            android:nextFocusDown="@id/cusom_swipe_view"
-            android:nextFocusUp="@id/cusom_swipe_view"
+            android:visibility="gone"
             app:tabIndicatorHeight="1dp" />
 
         <TextView
