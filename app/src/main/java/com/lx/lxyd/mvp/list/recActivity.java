@@ -1,29 +1,34 @@
 package com.lx.lxyd.mvp.list;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heixiu.errand.net.RetrofitFactory;
 import com.lx.lxyd.R;
+import com.lx.lxyd.adapter.NavMovieColAdapter;
+import com.lx.lxyd.adapter.NavMovieHisAdapter;
 import com.lx.lxyd.bean.allListData;
+import com.lx.lxyd.bean.colBean;
+import com.lx.lxyd.bean.colMBean;
+import com.lx.lxyd.bean.hisBean;
+import com.lx.lxyd.bean.hisMBean;
+import com.lx.lxyd.bean.homeBean;
 import com.lx.lxyd.bean.homeData;
 import com.lx.lxyd.bean.infoData;
 import com.lx.lxyd.bean.maintainData;
@@ -50,9 +55,19 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class recActivity extends AppCompatActivity {
     private TextView home_Ttime, home_Ttim;
-    NavMovieAdapter dataAdapter;
+    private Button button1, button2, button3;
+    private NavMovieAdapter dataAdapter;
+    private NavMovieColAdapter dataColAdapter;
+    private NavMovieHisAdapter dataHisAdapter;
+    LinearLayout homeLa, colLa, hisLa;
+    private List<colBean> colBeanList = new ArrayList<colBean>();
+    private List<hisBean> hisBeanList = new ArrayList<hisBean>();
+    private FocusRecyclerView rvData, rv_datacol, rv_datahis;
+    private List<maintainData> maintainDataList = new ArrayList<maintainData>();
+    private List<homeBean> stringList = new ArrayList<>();
+    private List<colMBean> colMBeanList = new ArrayList<colMBean>();
+    private List<hisMBean> hisMBeanList = new ArrayList<hisMBean>();
     private String savePath;
-
     private String[] str = {"首页", "收藏", "记录"};
     private int[] ints = {R.mipmap.home_ico, R.mipmap.home_col, R.mipmap.home_tim};
 
@@ -61,13 +76,43 @@ public class recActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         new TimeThread().start();
-//        tabLayout = findViewById(R.id.mtab);
-//        viewPager = findViewById(R.id.home_Vpage);
         home_Ttim = (TextView) findViewById(R.id.home_Ttim);
         home_Ttime = (TextView) findViewById(R.id.home_Ttime);
+        rvData = (FocusRecyclerView) findViewById(R.id.rv_data);
+        rv_datacol = (FocusRecyclerView) findViewById(R.id.rv_datacol);
+        rv_datahis = (FocusRecyclerView) findViewById(R.id.rv_datahis);
+        homeLa = findViewById(R.id.home_la);
+        colLa = findViewById(R.id.col_la);
+        hisLa = findViewById(R.id.his_la);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        button3 = findViewById(R.id.button3);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeLa.setVisibility(View.VISIBLE);
+                colLa.setVisibility(View.GONE);
+                hisLa.setVisibility(View.GONE);
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeLa.setVisibility(View.GONE);
+                colLa.setVisibility(View.VISIBLE);
+                hisLa.setVisibility(View.GONE);
+            }
+        });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homeLa.setVisibility(View.GONE);
+                colLa.setVisibility(View.GONE);
+                hisLa.setVisibility(View.VISIBLE);
+            }
+        });
         home_Ttime.setText(DataString.StringData());
         if (SPUtil.getInt(recActivity.this, "first", 0) == 1) {
-//            initViewPage();
             initData();
         } else {
             DataSupport.deleteAll(allListData.class);
@@ -141,10 +186,8 @@ public class recActivity extends AppCompatActivity {
         }
     }
 
-    private List<String> stringList = new ArrayList<>();
 
     private void initData() {
-
         Window window = this.getWindow();
         ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
@@ -164,9 +207,7 @@ public class recActivity extends AppCompatActivity {
             }
         }
 
-
-        final FocusRecyclerView rvData = (FocusRecyclerView) findViewById(R.id.rv_data);
-        GridLayoutManager focusGridLayoutManager = new GridLayoutManager(getApplicationContext(), 5);
+        GridLayoutManager focusGridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         rvData.setLayoutManager(focusGridLayoutManager);
         rvData.setAdapter(dataAdapter = new NavMovieAdapter(this, stringList));
         rvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -179,119 +220,69 @@ public class recActivity extends AppCompatActivity {
             }
         });
         int tempSize = stringList.size();
-        stringList.add("SDFASDFSDFADFSDAF");
-        stringList.add("测试测试测试测试测试测试测试测试");
-        stringList.add("测试测试测试测试");
-        stringList.add("测试");
-        stringList.add("SDFASDFSDFADFSDAF");
-        stringList.add("测试测试测试测试测试测试测试测试");
-        stringList.add("测试测试测试测试");
-        stringList.add("测试");
-        stringList.add("SDFASDFSDFADFSDAF");
-        stringList.add("测试测试测试测试测试测试测试测试");
-        stringList.add("测试测试测试测试");
-        stringList.add("测试");
-        stringList.add("SDFASDFSDFADFSDAF");
-        stringList.add("测试测试测试测试测试测试测试测试");
-        stringList.add("测试测试测试测试");
-        stringList.add("测试");
-
-        dataAdapter.notifyItemRangeInserted(tempSize, stringList.size() - tempSize);
-    }
-
-//    private void initViewPage() {
-//        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-//            @Override
-//            public Fragment getItem(int position) {
-//                Fragment fragment = new Fragment();
-//                if (fragment != null) {
-//                    switch (position) {
-//                        case 0:
-//                            fragment = new HomeFragment();
-//                            break;
-//                        case 1:
-//                            fragment = new ColFragment();
-//                            break;
-//                        case 2:
-//                            fragment = new TimeFragment();
-//                            break;
-//                    }
-//                }
-//                return fragment;
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return 3;
-//            }
-//        });
-//
-//        tabLayout.setupWithViewPager(viewPager);
-//        viewPager.setCurrentItem(0);
-//        for (int i = 0; i < 3; i++) {
-//            tabLayout.getTabAt(i).setCustomView(getTabView(i));
-//        }
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                changeTabSelect(tab);
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//                changeTabNormal(tab);
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-//
-//    }
-
-//    private void changeTabSelect(TabLayout.Tab tab) {
-//        View view = tab.getCustomView();
-//        TextView textView = view.findViewById(R.id.home_Tico);
-//        ImageView iv = view.findViewById(R.id.home_Iico);
-//        switch (tab.getPosition()) {
-//            case 0:
-//                iv.setImageResource(R.mipmap.home_pico);
-//                viewPager.setCurrentItem(0);
-//                break;
-//            case 1:
-//                iv.setImageResource(R.mipmap.home_colun);
-//                viewPager.setCurrentItem(1);
-//                break;
-//            case 2:
-//                iv.setImageResource(R.mipmap.home_timun);
-//                viewPager.setCurrentItem(2);
-//                break;
-//            default:
-//
-//        }
-//        textView.setTextColor(Color.parseColor("#FFFFFF"));
-//        textView.setTextSize(12);
-//    }
-
-    private void changeTabNormal(TabLayout.Tab tab) {
-        View view = tab.getCustomView();
-        TextView textView = view.findViewById(R.id.home_Tico);
-        ImageView iv = view.findViewById(R.id.home_Iico);
-        switch (tab.getPosition()) {
-            case 0:
-                iv.setImageResource(R.mipmap.home_ico);
-                break;
-            case 1:
-                iv.setImageResource(R.mipmap.home_col);
-                break;
-            case 2:
-                iv.setImageResource(R.mipmap.home_tim);
-                break;
-            default:
+        maintainDataList = DataSupport.findAll(maintainData.class);
+        for (int i = 0; i < maintainDataList.size(); i++) {
+            homeBean mhomeBean = new homeBean();
+            mhomeBean.setMainCode(maintainDataList.get(i).getMainCode());
+            mhomeBean.setMainId(maintainDataList.get(i).getMainId());
+            mhomeBean.setMainName(maintainDataList.get(i).getMainName());
+            stringList.add(mhomeBean);
         }
-        textView.setTextColor(Color.parseColor("#9b9b9b"));
-        textView.setTextSize(12);
+        dataAdapter.notifyItemRangeInserted(tempSize, stringList.size() - tempSize);
+
+
+        GridLayoutManager focusGridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 5);
+        rv_datacol.setLayoutManager(focusGridLayoutManager1);
+        rv_datacol.setAdapter(dataColAdapter = new NavMovieColAdapter(this, colMBeanList));
+        rv_datacol.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (rv_datacol.isRecyclerViewToBottom()) {
+                    }
+                }
+            }
+        });
+        int tempSize1 = colBeanList.size();
+        colBeanList = DataSupport.findAll(colBean.class);
+        for (int i = 0; i < colBeanList.size(); i++) {
+            colMBean mhomeBean = new colMBean();
+            mhomeBean.setAudio_url(colBeanList.get(i).getAudio_url());
+            mhomeBean.setTitle(colBeanList.get(i).getTitle());
+            mhomeBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
+            mhomeBean.setTopId(colBeanList.get(i).getTopId());
+            colMBeanList.add(mhomeBean);
+        }
+        dataColAdapter.notifyItemRangeInserted(tempSize1, colBeanList.size() - tempSize);
+
+
+        GridLayoutManager focusGridLayoutManager2 = new GridLayoutManager(getApplicationContext(), 5);
+        rv_datahis.setLayoutManager(focusGridLayoutManager2);
+        rv_datahis.setAdapter(dataHisAdapter = new NavMovieHisAdapter(this, hisMBeanList));
+        rv_datahis.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (rv_datahis.isRecyclerViewToBottom()) {
+                    }
+                }
+            }
+        });
+        int tempSize2 = hisBeanList.size();
+        hisBeanList = DataSupport
+                .order("create_time desc")//倒序字段
+                .find(hisBean.class);//查询表
+        for (int i = 0; i < hisBeanList.size(); i++) {
+            hisMBean mhomeBean = new hisMBean();
+            mhomeBean.setAudio_url(hisBeanList.get(i).getAudio_url());
+            mhomeBean.setTitle(hisBeanList.get(i).getTitle());
+            mhomeBean.setThumbnail_Url(hisBeanList.get(i).getThumbnail_Url());
+            mhomeBean.setTopId(hisBeanList.get(i).getTopId());
+            mhomeBean.setCreate_time(hisBeanList.get(i).getCreate_time());
+            hisMBeanList.add(mhomeBean);
+        }
+        dataHisAdapter.notifyItemRangeInserted(tempSize2, hisMBeanList.size() - tempSize);
+
     }
 
 
@@ -312,18 +303,6 @@ public class recActivity extends AppCompatActivity {
         }
     };
 
-    public View getTabView(int position) {
-        View v = LayoutInflater.from(this).inflate(R.layout.layout_tab_item, null);
-        ImageView iv = v.findViewById(R.id.home_Iico);
-        TextView tv = v.findViewById(R.id.home_Tico);
-        iv.setBackgroundResource(ints[position]);
-        tv.setText(str[position]);
-        if (position == 0) {
-            iv.setImageResource(R.mipmap.home_pico);
-            tv.setTextColor(v.getResources().getColor(R.color.white));
-        }
-        return v;
-    }
 
     class TimeThread extends Thread {
         @Override

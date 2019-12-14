@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="33dp"
@@ -17,53 +16,44 @@
         <ImageView
             android:layout_width="73dp"
             android:layout_height="23dp"
+            android:layout_centerVertical="true"
             android:src="@mipmap/icon_logo" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_selector"
-            android:text="首页" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_selector"
-            android:text="收藏" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_selector"
-            android:text="历史" />
-
-
-
-
-        <!--<android.support.design.widget.TabLayout-->
-            <!--android:id="@+id/mtab"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:layout_marginLeft="80dp"-->
-            <!--android:nextFocusDown="@id/home_Vpage"-->
-            <!--android:nextFocusUp="@id/home_Vpage"-->
-            <!--app:tabBackground="@android:color/transparent"-->
-            <!--app:tabGravity="fill"-->
-            <!--app:tabIndicatorColor="@android:color/transparent"-->
-            <!--app:tabIndicatorHeight="1dp" />-->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_selector"
+                android:text="首页" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_selector"
+                android:text="收藏" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/home_selector"
+                android:text="历史" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:orientation="horizontal">
 
             <TextView
@@ -89,31 +79,108 @@
                 android:textColor="#EF9402"
                 android:textSize="24dp" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@mipmap/icon_line" />
 
-    <com.yan.tvprojectutils.FocusRecyclerView
-        android:id="@+id/rv_data"
+    <LinearLayout
+        android:id="@+id/home_la"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:paddingBottom="50dp"
-        android:paddingLeft="35dp"
-        android:paddingRight="35dp"
-        android:paddingTop="35dp"
-    />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+      >
+
+        <ImageView
+            android:layout_width="193dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="14dp"
+            android:src="@mipmap/icon_title" />
+
+        <com.yan.tvprojectutils.FocusRecyclerView
+            android:id="@+id/rv_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="300dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+         />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-20dp"
+            android:src="@mipmap/icon_index_bg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/col_la"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="13dp"
+        android:background="@mipmap/icon_c_bg"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.yan.tvprojectutils.FocusRecyclerView
+            android:id="@+id/rv_datacol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="54dp"
+            android:layout_marginRight="54dp"
+            android:layout_marginTop="18dp"
+         />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/his_la"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="13dp"
+        android:background="@mipmap/icon_c_bg"
+        android:orientation="vertical"
+        android:paddingBottom="38dp"
+        android:paddingTop="38dp">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="41dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="13dp"
+                android:src="@mipmap/icon_address" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="历史"
+                android:textColor="#757575"
+                android:textSize="12dp" />
+        </LinearLayout>
+
+        <com.yan.tvprojectutils.FocusRecyclerView
+            android:id="@+id/rv_datahis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="41dp"
+            android:layout_marginRight="44dp"
+            android:layout_marginTop="8dp"
+       />
+    </LinearLayout>
 </LinearLayout>
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:id="@+id/home_Vpage"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:focusable="true"-->
-        <!--android:nextFocusDown="@id/mtab"-->
-        <!--android:nextFocusUp="@id/mtab" />-->
 

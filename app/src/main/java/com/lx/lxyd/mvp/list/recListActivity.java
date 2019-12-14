@@ -14,18 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lx.lxyd.R;
 import com.lx.lxyd.adapter.FilterBureauAdapter;
 import com.lx.lxyd.adapter.GridSpacingItemDecoration;
+import com.lx.lxyd.adapter.NavMovieColAdapter;
 import com.lx.lxyd.bean.allListData;
 import com.lx.lxyd.bean.colBean;
+import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.infoData;
 import com.lx.lxyd.constant.OnItemClickListener;
 import com.lx.lxyd.utils.DataString;
 import com.lx.lxyd.utils.Util;
+import com.lx.lxyd.view.NavMovieAdapter;
+import com.yan.tvprojectutils.FocusRecyclerView;
 
 import org.litepal.crud.DataSupport;
 
@@ -33,11 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class recListActivity extends AppCompatActivity {
-    private RecyclerView mRecyclerView = null;
-    private TextView home_Ttime, home_Ttim, rec_text, rec_weibaike, song, top, next;
-    private List<colBean> dataList = null;
+    private TextView home_Ttime, home_Ttim;
+    private Button  rec_text, rec_weibaike, song, top, next;
     private List<infoData> infoDataList = new ArrayList<>();
-    private FilterBureauAdapter adapter;
+    private List<colMBean> colMBeanList = new ArrayList<colMBean>();
+    private NavMovieColAdapter dataColAdapter;
+    private FocusRecyclerView rvData;
     private List<String> meunList = new ArrayList<>();
     private int pagesize = 0;
     private int pageid = 0;
@@ -56,47 +62,39 @@ public class recListActivity extends AppCompatActivity {
         }
         initData();
         new TimeThread().start();
-        home_Ttim = (TextView) findViewById(R.id.home_Ttim);
-        next = (TextView) findViewById(R.id.next);
-        top = (TextView) findViewById(R.id.top);
-        home_Ttime = (TextView) findViewById(R.id.home_Ttime);
-        mRecyclerView = findViewById(R.id.cusom_swipe_view);
-        rec_text = (TextView) findViewById(R.id.rec_text);
-        rec_weibaike = (TextView) findViewById(R.id.rec_weibaike);
-        song = (TextView) findViewById(R.id.song);
+        home_Ttim =  findViewById(R.id.home_Ttim);
+        next =  findViewById(R.id.next);
+        top =  findViewById(R.id.top);
+        home_Ttime =  findViewById(R.id.home_Ttime);
+        rvData = findViewById(R.id.rv_data);
+        rec_text =findViewById(R.id.rec_text);
+        rec_weibaike =  findViewById(R.id.rec_weibaike);
+        song = findViewById(R.id.song);
         home_Ttime.setText(DataString.StringData());
         initFilterBureau();
     }
 
     public void initFilterBureau() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(recListActivity.this, 4, GridLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(5, 4, Util.dip2px(recListActivity.this, 16), true));
-        adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
+        GridLayoutManager focusGridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 4);
+        rvData.setLayoutManager(focusGridLayoutManager1);
+        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(this, colMBeanList));
+        rvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                Intent i = new Intent(recListActivity.this, InfoActivity.class);
-                i.putExtra("info", infoDataList.get(position));
-                i.putExtra("flag", "0");
-                startActivity(i);
-//                adapter.refreshBureau(position);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (rvData.isRecyclerViewToBottom()) {
+                    }
+                }
             }
         });
-        mRecyclerView.setAdapter(adapter);
+        getDataFirst(0,0);
+
         rec_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pagesize = 0;
                 pageid = 0;
-                getData(pageid, pagesize);
-                adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-                mRecyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                getDataFirst(pageid, pagesize);
             }
         });
         rec_weibaike.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +102,7 @@ public class recListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pagesize = 0;
                 pageid = 1;
-                getData(pageid, pagesize);
-                adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-                mRecyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
+                getDataFirst(pageid, pagesize);
             }
         });
         song.setOnClickListener(new View.OnClickListener() {
@@ -115,17 +110,15 @@ public class recListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pagesize = 0;
                 pageid = 2;
-                getData(pageid, pagesize);
-//                adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-//                mRecyclerView.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
+
+                getDataFirst(pageid, pagesize);
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 pagesize = pagesize + 8;
-                getData(pageid, pagesize);
+                getDataFirst(pageid, pagesize);
 
             }
         });
@@ -137,10 +130,7 @@ public class recListActivity extends AppCompatActivity {
                 if (pagesize < 0) {
                     return;
                 }
-                getData(pageid, pagesize);
-//                adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-//                mRecyclerView.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
+                getDataFirst(pageid, pagesize);
             }
         });
     }
@@ -165,39 +155,27 @@ public class recListActivity extends AppCompatActivity {
                 mChildView.setLayoutParams(lp);
             }
         }
-        getDataFirst(0, 0);
     }
 
     private void getDataFirst(int topid, int page) {
+//         List<colMBean> colMBeanList1 = new ArrayList<colMBean>();
+//        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList1));
+//        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList));
+//        dataColAdapter.notifyDataSetChanged();
+        int tempSize1 = infoDataList.size();
         infoDataList = DataSupport.where("topId=?", meunList.get(topid)).limit(8).offset(page).find(infoData.class);
         if (infoDataList == null) {
             return;
         }
-        dataList = new ArrayList<>();
         for (int i = 0; i < infoDataList.size(); i++) {
-            colBean colBean = new colBean();
-            colBean.setTitle(infoDataList.get(i).getTitle());
-            colBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
-            dataList.add(colBean);
+            colMBean mhomeBean = new colMBean();
+            mhomeBean.setTitle(infoDataList.get(i).getTitle());
+            mhomeBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
+            colMBeanList.add(mhomeBean);
         }
+        dataColAdapter.notifyItemRangeInserted(tempSize1, colMBeanList.size() - tempSize1);
     }
 
-    private void getData(int topid, int page) {
-        infoDataList = DataSupport.where("topId=?", meunList.get(topid)).limit(8).offset(page).find(infoData.class);
-        if (infoDataList == null) {
-            return;
-        }
-        dataList = new ArrayList<>();
-        for (int i = 0; i < infoDataList.size(); i++) {
-            colBean colBean = new colBean();
-            colBean.setTitle(infoDataList.get(i).getTitle());
-            colBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
-            dataList.add(colBean);
-        }
-        adapter = new FilterBureauAdapter(recListActivity.this, dataList);
-        mRecyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
 
     private Handler mHandler = new Handler() {
         @Override

@@ -10,13 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.lx.lxyd.R;
 import com.lx.lxyd.adapter.FilterBureauAdapter;
 import com.lx.lxyd.adapter.GridSpacingItemDecoration;
 import com.lx.lxyd.bean.RxBusEntity;
 import com.lx.lxyd.bean.colBean;
-import com.lx.lxyd.bean.infoData;
 import com.lx.lxyd.constant.OnItemClickListener;
 import com.lx.lxyd.mvp.list.PlayerActivity;
 import com.lx.lxyd.utils.RxBus;
@@ -39,7 +37,8 @@ public class ColFragment extends Fragment {
     private RecyclerView mRecyclerView = null;
     List<colBean> colBeanList = null;
     private List<colBean> dataList = null;
-    private Disposable subscribe= null;
+    private Disposable subscribe = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,15 +48,15 @@ public class ColFragment extends Fragment {
         subscribe = RxBus.getDefault().toObservable(RxBusEntity.class).subscribe(new Consumer<RxBusEntity>() {
             @Override
             public void accept(RxBusEntity rxBusEntity) throws Exception {
-                if(rxBusEntity.getMsg().equals("1")){
+                if (rxBusEntity.getMsg().equals("1")) {
                     initData();
                     final FilterBureauAdapter adapter = new FilterBureauAdapter(getActivity(), dataList);
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
                             Intent i = new Intent(getActivity(), PlayerActivity.class);
-                            i.putExtra("info",dataList.get(position) );
-                            i.putExtra("flag","1");
+                            i.putExtra("info", dataList.get(position));
+                            i.putExtra("flag", "1");
                             startActivity(i);
                         }
 
@@ -84,8 +83,8 @@ public class ColFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent i = new Intent(getActivity(), PlayerActivity.class);
-                i.putExtra("info",dataList.get(position) );
-                i.putExtra("flag","1");
+                i.putExtra("info", dataList.get(position));
+                i.putExtra("flag", "1");
                 startActivity(i);
             }
 
@@ -97,9 +96,9 @@ public class ColFragment extends Fragment {
         mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if(b){
+                if (b) {
                     view.findViewById(R.id.col_bg).setBackground(getActivity().getResources().getDrawable(R.drawable.beadun_bg));
-                }else{
+                } else {
                     view.findViewById(R.id.col_bg).setBackground(getActivity().getResources().getDrawable(R.drawable.bead_bg));
                 }
             }
@@ -113,18 +112,18 @@ public class ColFragment extends Fragment {
             return;
         }
         dataList = new ArrayList<>();
-//        for (int i = 0; i < colBeanList.size(); i++) {
-//            colBean colBean = new colBean();
-//            colBean.setTitle(colBeanList.get(i).getTitle());
-//            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
-//            dataList.add(colBean);
-//        }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < colBeanList.size(); i++) {
             colBean colBean = new colBean();
-            colBean.setTitle("2");
-            colBean.setThumbnail_Url("2");
+            colBean.setTitle(colBeanList.get(i).getTitle());
+            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
             dataList.add(colBean);
         }
+//        for (int i = 0; i < 5; i++) {
+//            colBean colBean = new colBean();
+//            colBean.setTitle("2");
+//            colBean.setThumbnail_Url("2");
+//            dataList.add(colBean);
+//        }
     }
 
     @Override

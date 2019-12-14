@@ -10,29 +10,35 @@
     <!---->
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/pll_larger"
-        android:layout_width="123dp"
-        android:layout_height="57dp"
-        android:background="@drawable/text_selector"
-        android:layout_margin="15dp"
+        android:layout_width="95dp"
+        android:layout_height="85dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="vertical">
-
-
+        <RelativeLayout
+            android:layout_width="95dp"
+            android:layout_height="85dp">
+        <ImageView
+            android:id="@+id/col_img"
+            android:layout_width="95dp"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher"
+            />
         <com.yan.tvprojectutils.MarqueeText
             android:id="@+id/tv_movie_nav"
-            android:layout_below="@+id/iv_poster"
-            android:layout_width="match_parent"
+            android:layout_below="@+id/col_img"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginBottom="6dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
+            android:text="的撒大急啊离开是假的啦"
             android:textColor="@color/state_movie_nav"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
             android:textSize="12dp" />
+        </RelativeLayout>
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
 </com.zhy.android.percent.support.PercentFrameLayout>

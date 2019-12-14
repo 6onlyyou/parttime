@@ -1,21 +1,24 @@
-package com.lx.lxyd.view;
+package com.lx.lxyd.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.lx.lxyd.R;
-import com.lx.lxyd.bean.RxBusEntity;
-import com.lx.lxyd.bean.homeBean;
+import com.lx.lxyd.bean.colBean;
+import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.maintainData;
+import com.lx.lxyd.mvp.list.PlayerActivity;
 import com.lx.lxyd.mvp.list.recListActivity;
+import com.lx.lxyd.utils.GlideUtil;
+import com.lx.lxyd.view.AnimationHelper;
+import com.lx.lxyd.view.ColNavMovieHolder;
+import com.lx.lxyd.view.NavMovieHolder;
 import com.yan.tvprojectutils.MarqueeText;
 
 import java.util.List;
@@ -24,32 +27,35 @@ import java.util.List;
  * Created by yan on 2017/7/21.
  */
 
-public class NavMovieAdapter extends RecyclerView.Adapter<NavMovieHolder> {
+public class NavMovieColAdapter extends RecyclerView.Adapter<ColNavMovieHolder> {
     protected final Context context;
-    private final List<homeBean> stringList;
+    private final List<colMBean> stringList;
 
-    public NavMovieAdapter(Context context, List<homeBean> objectList) {
+    public NavMovieColAdapter(Context context, List<colMBean> objectList) {
         this.stringList = objectList;
         this.context = context;
     }
 
     @Override
-    public NavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new NavMovieHolder(LayoutInflater.from(context)
-                .inflate(R.layout.item_all_movie, parent, false));
+    public ColNavMovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ColNavMovieHolder(LayoutInflater.from(context)
+                .inflate(R.layout.colitem_all_movie, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(NavMovieHolder holder, final int position) {
+    public void onBindViewHolder(ColNavMovieHolder holder, final int position) {
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, recListActivity.class);
-                i.putExtra("topid",stringList.get(position).getMainId());
+                Intent i = new Intent(context, PlayerActivity.class);
+                i.putExtra("info", stringList.get(position));
+                i.putExtra("flag", "1");
                 context.startActivity(i);
             }
         });
-        holder.tvTitle.setText(stringList.get(position).getMainName());
+//        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), stringList.get(position).getThumbnail_Url(),  holder.ivPoster);
+
+        holder.tvTitle.setText(stringList.get(position).getTitle());
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {

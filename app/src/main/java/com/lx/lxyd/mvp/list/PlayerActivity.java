@@ -11,13 +11,14 @@ import android.widget.FrameLayout;
 
 import com.lx.lxyd.R;
 import com.lx.lxyd.bean.colBean;
+import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.infoData;
 
 import cn.jzvd.JZVideoPlayer;
 import cn.jzvd.JZVideoPlayerStandard;
 
 public class PlayerActivity extends AppCompatActivity {
-    private com.lx.lxyd.bean.colBean colBean = new colBean();
+    private colMBean colBean = new colMBean();
     private infoData mcolBean = new infoData();
 
     @Override
