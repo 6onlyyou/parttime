@@ -1,6 +1,5 @@
 package com.lx.lxyd.mvp.list;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,9 +7,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,22 +23,16 @@ import android.widget.TextView;
 
 import com.heixiu.errand.net.RetrofitFactory;
 import com.lx.lxyd.R;
-import com.lx.lxyd.adapter.FilterBureauAdapter;
-import com.lx.lxyd.adapter.GridSpacingItemDecoration;
 import com.lx.lxyd.bean.allListData;
-import com.lx.lxyd.bean.colBean;
 import com.lx.lxyd.bean.homeData;
 import com.lx.lxyd.bean.infoData;
 import com.lx.lxyd.bean.maintainData;
-import com.lx.lxyd.constant.OnItemClickListener;
-import com.lx.lxyd.fragment.ColFragment;
-import com.lx.lxyd.fragment.HomeFragment;
-import com.lx.lxyd.fragment.TimeFragment;
 import com.lx.lxyd.net.bean.ResponseBean;
 import com.lx.lxyd.net.service.ApiService;
 import com.lx.lxyd.utils.DataString;
 import com.lx.lxyd.utils.SPUtil;
-import com.lx.lxyd.utils.Util;
+import com.lx.lxyd.view.NavMovieAdapter;
+import com.yan.tvprojectutils.FocusRecyclerView;
 
 import org.litepal.crud.DataSupport;
 
@@ -60,12 +50,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class recActivity extends AppCompatActivity {
     private TextView home_Ttime, home_Ttim;
-//    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    NavMovieAdapter dataAdapter;
     private String savePath;
-    List<colBean> colBeanList = null;
-    private List<colBean> dataList = null;
-    private RecyclerView mRecyclerView = null;
+
     private String[] str = {"首页", "收藏", "记录"};
     private int[] ints = {R.mipmap.home_ico, R.mipmap.home_col, R.mipmap.home_tim};
 
@@ -75,43 +62,13 @@ public class recActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         new TimeThread().start();
 //        tabLayout = findViewById(R.id.mtab);
-        viewPager = findViewById(R.id.home_Vpage);
+//        viewPager = findViewById(R.id.home_Vpage);
         home_Ttim = (TextView) findViewById(R.id.home_Ttim);
         home_Ttime = (TextView) findViewById(R.id.home_Ttime);
         home_Ttime.setText(DataString.StringData());
         if (SPUtil.getInt(recActivity.this, "first", 0) == 1) {
-            initViewPage();
+//            initViewPage();
             initData();
-            mRecyclerView = findViewById(R.id.cusom_swipe_view);
-            mRecyclerView.setItemAnimator(null);
-            mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3, GridLayoutManager.VERTICAL, false));
-            mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(5, 3, Util.dip2px(this, 16), true));
-            FilterBureauAdapter adapter1 = new FilterBureauAdapter(getApplicationContext(), dataList);
-            adapter1.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Intent i = new Intent(recActivity.this, PlayerActivity.class);
-                    i.putExtra("info",dataList.get(position) );
-                    i.putExtra("flag","1");
-                    startActivity(i);
-                }
-
-                @Override
-                public void onItemLongClick(View view, int position) {
-
-                }
-            });
-            mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if(b){
-                        view.findViewById(R.id.col_bg).setBackground(getResources().getDrawable(R.drawable.beadun_bg));
-                    }else{
-                        view.findViewById(R.id.col_bg).setBackground(getResources().getDrawable(R.drawable.bead_bg));
-                    }
-                }
-            });
-            mRecyclerView.setAdapter(adapter1);
         } else {
             DataSupport.deleteAll(allListData.class);
             DataSupport.deleteAll(maintainData.class);
@@ -172,9 +129,8 @@ public class recActivity extends AppCompatActivity {
                             }
                             DataSupport.saveAll(maintainDataList);
                             SPUtil.putInt(recActivity.this, "first", 1);
-                            initViewPage();
+//                            initViewPage();
                             initData();
-                            text(View.inflate(recActivity.this, R.layout.activity_list, null));
                         }
                     }, new Consumer<Throwable>() {
                         @Override
@@ -183,17 +139,12 @@ public class recActivity extends AppCompatActivity {
                         }
                     });
         }
-
-
-
-
-
-
     }
-    private void text(View view){
 
-    }
+    private List<String> stringList = new ArrayList<>();
+
     private void initData() {
+
         Window window = this.getWindow();
         ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
         View mChildView = mContentView.getChildAt(0);
@@ -214,52 +165,67 @@ public class recActivity extends AppCompatActivity {
         }
 
 
-        colBeanList = DataSupport.findAll(colBean.class);
-        if (colBeanList == null) {
-            return;
-        }
-        dataList = new ArrayList<>();
-//        for (int i = 0; i < colBeanList.size(); i++) {
-//            colBean colBean = new colBean();
-//            colBean.setTitle(colBeanList.get(i).getTitle());
-//            colBean.setThumbnail_Url(colBeanList.get(i).getThumbnail_Url());
-//            dataList.add(colBean);
-//        }
-        for (int i = 0; i < 5; i++) {
-            colBean colBean = new colBean();
-            colBean.setTitle("2");
-            colBean.setThumbnail_Url("2");
-            dataList.add(colBean);
-        }
-    }
-
-    private void initViewPage() {
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+        final FocusRecyclerView rvData = (FocusRecyclerView) findViewById(R.id.rv_data);
+        GridLayoutManager focusGridLayoutManager = new GridLayoutManager(getApplicationContext(), 5);
+        rvData.setLayoutManager(focusGridLayoutManager);
+        rvData.setAdapter(dataAdapter = new NavMovieAdapter(this, stringList));
+        rvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public Fragment getItem(int position) {
-                Fragment fragment = new Fragment();
-                if (fragment != null) {
-                    switch (position) {
-                        case 0:
-                            fragment = new HomeFragment();
-                            break;
-                        case 1:
-                            fragment = new ColFragment();
-                            break;
-                        case 2:
-                            fragment = new TimeFragment();
-                            break;
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (rvData.isRecyclerViewToBottom()) {
                     }
                 }
-                return fragment;
-            }
-
-            @Override
-            public int getCount() {
-                return 3;
             }
         });
+        int tempSize = stringList.size();
+        stringList.add("SDFASDFSDFADFSDAF");
+        stringList.add("测试测试测试测试测试测试测试测试");
+        stringList.add("测试测试测试测试");
+        stringList.add("测试");
+        stringList.add("SDFASDFSDFADFSDAF");
+        stringList.add("测试测试测试测试测试测试测试测试");
+        stringList.add("测试测试测试测试");
+        stringList.add("测试");
+        stringList.add("SDFASDFSDFADFSDAF");
+        stringList.add("测试测试测试测试测试测试测试测试");
+        stringList.add("测试测试测试测试");
+        stringList.add("测试");
+        stringList.add("SDFASDFSDFADFSDAF");
+        stringList.add("测试测试测试测试测试测试测试测试");
+        stringList.add("测试测试测试测试");
+        stringList.add("测试");
 
+        dataAdapter.notifyItemRangeInserted(tempSize, stringList.size() - tempSize);
+    }
+
+//    private void initViewPage() {
+//        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+//            @Override
+//            public Fragment getItem(int position) {
+//                Fragment fragment = new Fragment();
+//                if (fragment != null) {
+//                    switch (position) {
+//                        case 0:
+//                            fragment = new HomeFragment();
+//                            break;
+//                        case 1:
+//                            fragment = new ColFragment();
+//                            break;
+//                        case 2:
+//                            fragment = new TimeFragment();
+//                            break;
+//                    }
+//                }
+//                return fragment;
+//            }
+//
+//            @Override
+//            public int getCount() {
+//                return 3;
+//            }
+//        });
+//
 //        tabLayout.setupWithViewPager(viewPager);
 //        viewPager.setCurrentItem(0);
 //        for (int i = 0; i < 3; i++) {
@@ -281,32 +247,32 @@ public class recActivity extends AppCompatActivity {
 //
 //            }
 //        });
+//
+//    }
 
-    }
-
-    private void changeTabSelect(TabLayout.Tab tab) {
-        View view = tab.getCustomView();
-        TextView textView = view.findViewById(R.id.home_Tico);
-        ImageView iv = view.findViewById(R.id.home_Iico);
-        switch (tab.getPosition()) {
-            case 0:
-                iv.setImageResource(R.mipmap.home_pico);
-                viewPager.setCurrentItem(0);
-                break;
-            case 1:
-                iv.setImageResource(R.mipmap.home_colun);
-                viewPager.setCurrentItem(1);
-                break;
-            case 2:
-                iv.setImageResource(R.mipmap.home_timun);
-                viewPager.setCurrentItem(2);
-                break;
-            default:
-
-        }
-        textView.setTextColor(Color.parseColor("#FFFFFF"));
-        textView.setTextSize(12);
-    }
+//    private void changeTabSelect(TabLayout.Tab tab) {
+//        View view = tab.getCustomView();
+//        TextView textView = view.findViewById(R.id.home_Tico);
+//        ImageView iv = view.findViewById(R.id.home_Iico);
+//        switch (tab.getPosition()) {
+//            case 0:
+//                iv.setImageResource(R.mipmap.home_pico);
+//                viewPager.setCurrentItem(0);
+//                break;
+//            case 1:
+//                iv.setImageResource(R.mipmap.home_colun);
+//                viewPager.setCurrentItem(1);
+//                break;
+//            case 2:
+//                iv.setImageResource(R.mipmap.home_timun);
+//                viewPager.setCurrentItem(2);
+//                break;
+//            default:
+//
+//        }
+//        textView.setTextColor(Color.parseColor("#FFFFFF"));
+//        textView.setTextSize(12);
+//    }
 
     private void changeTabNormal(TabLayout.Tab tab) {
         View view = tab.getCustomView();
@@ -374,6 +340,7 @@ public class recActivity extends AppCompatActivity {
             } while (true);
         }
     }
+
     @Override
     protected void onResume() {
         if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {

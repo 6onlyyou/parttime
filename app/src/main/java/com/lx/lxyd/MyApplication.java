@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 
 import com.lx.lxyd.constant.AppConstant;
 import com.lx.lxyd.net.AndroidBase;
+import com.yan.tvprojectutils.DensityHelper;
 
 import org.litepal.LitePal;
 
@@ -46,6 +47,7 @@ public class MyApplication extends Application {
 
         super.onCreate();
         instance = this;
+        DensityHelper.activate(getApplicationContext(), 1280);
         mContext = getApplicationContext();
         LitePal.initialize(this);
         AndroidBase.init(this, AppConstant.INSTANCE.getBASE_URL(), AppConstant.INSTANCE.getBASE_URL());
