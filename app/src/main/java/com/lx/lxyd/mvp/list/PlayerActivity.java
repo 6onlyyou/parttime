@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.lx.lxyd.R;
 import com.lx.lxyd.bean.colBean;
 import com.lx.lxyd.bean.colMBean;
+import com.lx.lxyd.bean.hisMBean;
 import com.lx.lxyd.bean.infoData;
 
 import cn.jzvd.JZVideoPlayer;
@@ -19,8 +20,8 @@ import cn.jzvd.JZVideoPlayerStandard;
 
 public class PlayerActivity extends AppCompatActivity {
     private colMBean colBean = new colMBean();
+    private hisMBean hisBean = new hisMBean();
     private infoData mcolBean = new infoData();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +31,15 @@ public class PlayerActivity extends AppCompatActivity {
 
         if (i.getStringExtra("flag").equals("1")) {
             colBean = i.getParcelableExtra("info");
-        } else {
+        } else if(i.getStringExtra("flag").equals("2")){
+            hisBean = i.getParcelableExtra("info");
+        }else{
             mcolBean = i.getParcelableExtra("info");
         }
 
-        if (mcolBean.getAudio_url() == null) {
-            return;
-        }
+//        if (mcolBean.getAudio_url() == null) {
+//            return;
+//        }
         JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
         jzVideoPlayerStandard.setUp(mcolBean.getAudio_url(),
                 JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,

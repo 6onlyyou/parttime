@@ -47,7 +47,7 @@ public class NavMovieHisAdapter extends RecyclerView.Adapter<ColNavMovieHolder> 
             public void onClick(View v) {
                 Intent i = new Intent(context, PlayerActivity.class);
                 i.putExtra("info", stringList.get(position));
-                i.putExtra("flag", "1");
+                i.putExtra("flag", "2");
                 context.startActivity(i);
             }
         });

@@ -19,17 +19,11 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.lx.lxyd.R;
-import com.lx.lxyd.adapter.FilterBureauAdapter;
-import com.lx.lxyd.adapter.GridSpacingItemDecoration;
 import com.lx.lxyd.adapter.NavMovieColAdapter;
 import com.lx.lxyd.bean.allListData;
-import com.lx.lxyd.bean.colBean;
 import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.infoData;
-import com.lx.lxyd.constant.OnItemClickListener;
 import com.lx.lxyd.utils.DataString;
-import com.lx.lxyd.utils.Util;
-import com.lx.lxyd.view.NavMovieAdapter;
 import com.yan.tvprojectutils.FocusRecyclerView;
 
 import org.litepal.crud.DataSupport;
@@ -110,7 +104,6 @@ public class recListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pagesize = 0;
                 pageid = 2;
-
                 getDataFirst(pageid, pagesize);
             }
         });
@@ -125,7 +118,6 @@ public class recListActivity extends AppCompatActivity {
         top.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 pagesize = pagesize - 8;
                 if (pagesize < 0) {
                     return;
@@ -173,7 +165,12 @@ public class recListActivity extends AppCompatActivity {
             mhomeBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
             colMBeanList.add(mhomeBean);
         }
-        dataColAdapter.notifyItemRangeInserted(tempSize1, colMBeanList.size() - tempSize1);
+        dataColAdapter.notifyDataSetChanged();
+    }
+    private void clearData(){
+                 List<colMBean> colMBeanList1 = new ArrayList<colMBean>();
+        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList1));
+        dataColAdapter.notifyDataSetChanged();
     }
 
 
