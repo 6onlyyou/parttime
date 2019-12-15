@@ -13,7 +13,7 @@ import com.yan.tvprojectutils.MarqueeText;
 public class ColNavMovieHolder extends RecyclerView.ViewHolder {
     public MarqueeText tvTitle;
     public View pflContainer;
-    public ImageView ivPoster;
+    public RoundImageView ivPoster;
     public ColNavMovieHolder(View itemView) {
         super(itemView);
         ivPoster = itemView.findViewById(R.id.col_img);

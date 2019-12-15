@@ -13,6 +13,7 @@ import com.lx.lxyd.R;
 import com.lx.lxyd.bean.colBean;
 import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.maintainData;
+import com.lx.lxyd.mvp.list.InfoActivity;
 import com.lx.lxyd.mvp.list.PlayerActivity;
 import com.lx.lxyd.mvp.list.recListActivity;
 import com.lx.lxyd.utils.GlideUtil;
@@ -47,13 +48,14 @@ public class NavMovieColAdapter extends RecyclerView.Adapter<ColNavMovieHolder> 
         holder.pflContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, PlayerActivity.class);
+                Intent i = new Intent(context, InfoActivity.class);
                 i.putExtra("info", stringList.get(position));
                 i.putExtra("flag", "1");
                 context.startActivity(i);
             }
         });
-//        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), stringList.get(position).getThumbnail_Url(),  holder.ivPoster);
+//        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), "https://pic4.zhimg.com/b38a02422ff00bab7b95287288f1a933_xs.jpg",  holder.ivPoster);
+        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), stringList.get(position).getThumbnail_Url(),  holder.ivPoster);
 
         holder.tvTitle.setText(stringList.get(position).getTitle());
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {

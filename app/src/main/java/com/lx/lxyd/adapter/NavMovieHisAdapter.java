@@ -51,7 +51,7 @@ public class NavMovieHisAdapter extends RecyclerView.Adapter<ColNavMovieHolder> 
                 context.startActivity(i);
             }
         });
-//        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), stringList.get(position).getThumbnail_Url(),  holder.ivPoster);
+        GlideUtil.loadPlaceHolder(holder.itemView.getContext(), stringList.get(position).getThumbnail_Url(),  holder.ivPoster);
 
         holder.tvTitle.setText(stringList.get(position).getTitle());
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {

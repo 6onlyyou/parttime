@@ -31,19 +31,24 @@ public class PlayerActivity extends AppCompatActivity {
 
         if (i.getStringExtra("flag").equals("1")) {
             colBean = i.getParcelableExtra("info");
+            JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
+            jzVideoPlayerStandard.setUp(colBean.getAudio_url(),
+                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
+                    colBean.getTitle());
         } else if(i.getStringExtra("flag").equals("2")){
             hisBean = i.getParcelableExtra("info");
+            JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
+            jzVideoPlayerStandard.setUp(hisBean.getAudio_url(),
+                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
+                    hisBean.getTitle());
         }else{
             mcolBean = i.getParcelableExtra("info");
+            JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
+            jzVideoPlayerStandard.setUp(mcolBean.getAudio_url(),
+                    JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
+                    mcolBean.getTitle());
         }
 
-//        if (mcolBean.getAudio_url() == null) {
-//            return;
-//        }
-        JZVideoPlayerStandard jzVideoPlayerStandard = (JZVideoPlayerStandard) findViewById(R.id.videoplayer);
-        jzVideoPlayerStandard.setUp(mcolBean.getAudio_url(),
-                JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL,
-                mcolBean.getTitle());
     }
 
     @Override

@@ -86,10 +86,15 @@
             android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.lx.lxyd.view.RoundImageView
                 android:id="@+id/info_img"
                 android:layout_width="276dp"
-                android:layout_height="156dp" />
+                android:layout_height="156dp"
+                android:background="@drawable/bead_bg"
+                android:padding="1dp"
+                android:scaleType="centerCrop"
+                app:borderRadius="12dp"
+                app:type="round" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -125,10 +130,15 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/cusom_swipe_view"
+
+        <com.yan.tvprojectutils.FocusRecyclerView
+            android:id="@+id/rv_data"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="20dp"
+            android:minHeight="100dp" />
     </LinearLayout>
 </LinearLayout>

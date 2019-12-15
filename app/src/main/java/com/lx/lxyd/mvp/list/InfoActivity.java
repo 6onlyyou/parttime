@@ -1,27 +1,37 @@
 package com.lx.lxyd.mvp.list;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lx.lxyd.R;
 import com.lx.lxyd.adapter.FilterBureauAdapter;
-import com.lx.lxyd.adapter.GridSpacingItemDecoration;
+import com.lx.lxyd.adapter.NavMovieHisAdapter;
 import com.lx.lxyd.bean.RxBusEntity;
 import com.lx.lxyd.bean.colBean;
+import com.lx.lxyd.bean.colMBean;
 import com.lx.lxyd.bean.hisBean;
+import com.lx.lxyd.bean.hisMBean;
 import com.lx.lxyd.bean.infoData;
+import com.lx.lxyd.utils.DataString;
+import com.lx.lxyd.utils.GlideUtil;
 import com.lx.lxyd.utils.RxBus;
-import com.lx.lxyd.utils.Util;
+import com.yan.tvprojectutils.FocusRecyclerView;
 
 import org.litepal.crud.DataSupport;
 
@@ -31,10 +41,15 @@ import java.util.Date;
 import java.util.List;
 
 public class InfoActivity extends AppCompatActivity {
-    private RecyclerView mRecyclerView = null;
     private FilterBureauAdapter adapter;
+    private NavMovieHisAdapter dataAdapter;
+    private FocusRecyclerView rvData;
     private Button info_play, info_col;
-    private infoData mcolBean = null;
+    private colMBean mcolBean = null;
+    private TextView home_Ttime, home_Ttim;
+    private List<hisMBean> hisMBeanList = new ArrayList<hisMBean>();
+    ImageView info_img;
+    TextView info_name;
     private List<colBean> dataList = null;
     private List<infoData> infoDataList = new ArrayList<>();
 
@@ -43,9 +58,14 @@ public class InfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         setView();
-        mRecyclerView = findViewById(R.id.cusom_swipe_view);
+        home_Ttim = findViewById(R.id.home_Ttim);
+        home_Ttime = findViewById(R.id.home_Ttime);
+        rvData = findViewById(R.id.rv_data);
         info_play = findViewById(R.id.info_play);
         info_col = findViewById(R.id.info_col);
+        info_name = findViewById(R.id.info_name);
+        info_img = findViewById(R.id.info_img);
+        home_Ttime.setText(DataString.StringData());
         Intent i = getIntent();
         mcolBean = i.getParcelableExtra("info");
         getData();
@@ -53,10 +73,6 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     public void initFilterBureau() {
-        mRecyclerView.setLayoutManager(new GridLayoutManager(InfoActivity.this, 5, GridLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new GridSpacingItemDecoration(5, 5, Util.dip2px(InfoActivity.this, 16), true));
-        adapter = new FilterBureauAdapter(InfoActivity.this, dataList);
-        mRecyclerView.setAdapter(adapter);
         info_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +101,7 @@ public class InfoActivity extends AppCompatActivity {
                 }
                 Intent i = new Intent(InfoActivity.this, PlayerActivity.class);
                 i.putExtra("info", mcolBean);
-                i.putExtra("flag", "0");
+                i.putExtra("flag", "1");
                 startActivity(i);
             }
         });
@@ -139,20 +155,79 @@ public class InfoActivity extends AppCompatActivity {
                 mChildView.setLayoutParams(lp);
             }
         }
+        new TimeThread().start();
     }
 
     public void getData() {
 
+        info_name.setText(mcolBean.getTitle());
+        GlideUtil.loadPlaceHolder(this, mcolBean.getThumbnail_Url(), info_img);
+        GridLayoutManager focusGridLayoutManager2 = new GridLayoutManager(getApplicationContext(), 5);
+        rvData.setLayoutManager(focusGridLayoutManager2);
+        rvData.setAdapter(dataAdapter = new NavMovieHisAdapter(this, hisMBeanList));
+        rvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (rvData.isRecyclerViewToBottom()) {
+                    }
+                }
+            }
+        });
         infoDataList = DataSupport.where("topId=?", mcolBean.getTopId()).limit(5).offset(0).find(infoData.class);
         if (infoDataList == null) {
             return;
         }
-        dataList = new ArrayList<>();
         for (int i = 0; i < infoDataList.size(); i++) {
-            colBean colBean = new colBean();
-            colBean.setTitle(infoDataList.get(i).getTitle());
-            colBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
-            dataList.add(colBean);
+            hisMBean mhomeBean = new hisMBean();
+            mhomeBean.setAudio_url(infoDataList.get(i).getAudio_url());
+            mhomeBean.setTitle(infoDataList.get(i).getTitle());
+            mhomeBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
+            mhomeBean.setTopId(infoDataList.get(i).getTopId());
+            mhomeBean.setCreate_time(infoDataList.get(i).getCreate_time());
+            hisMBeanList.add(mhomeBean);
         }
+        dataAdapter.notifyDataSetChanged();
+    }
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    long sysTime = System.currentTimeMillis();//获取系统时间
+                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);//时间显示格式
+                    home_Ttim.setText(sysTimeStr); //更新时间
+                    break;
+                default:
+                    break;
+
+            }
+        }
+    };
+
+    class TimeThread extends Thread {
+        @Override
+        public void run() {
+            do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = 1;  //消息(一个整型值)
+                    mHandler.sendMessage(msg);// 每隔1秒发送一个msg给mHandler
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        super.onResume();
     }
 }

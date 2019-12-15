@@ -33,7 +33,7 @@ import java.util.List;
 
 public class recListActivity extends AppCompatActivity {
     private TextView home_Ttime, home_Ttim;
-    private Button  rec_text, rec_weibaike, song, top, next;
+    private Button rec_text, rec_weibaike, song, top, next;
     private List<infoData> infoDataList = new ArrayList<>();
     private List<colMBean> colMBeanList = new ArrayList<colMBean>();
     private NavMovieColAdapter dataColAdapter;
@@ -48,21 +48,19 @@ public class recListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rec_list);
         Intent intent = getIntent();
         String topid = intent.getStringExtra("topid");
-        List<allListData> allPersons = DataSupport.findAll(allListData.class);
-        Log.d("allPersons", allPersons.size() + "");
         List<allListData> mallListData = DataSupport.where("topId=?", topid).find(allListData.class);
         for (allListData msallListData : mallListData) {
             meunList.add(msallListData.getMainId());
         }
         initData();
         new TimeThread().start();
-        home_Ttim =  findViewById(R.id.home_Ttim);
-        next =  findViewById(R.id.next);
-        top =  findViewById(R.id.top);
-        home_Ttime =  findViewById(R.id.home_Ttime);
+        home_Ttim = findViewById(R.id.home_Ttim);
+        home_Ttime = findViewById(R.id.home_Ttime);
+        next = findViewById(R.id.next);
+        top = findViewById(R.id.top);
         rvData = findViewById(R.id.rv_data);
-        rec_text =findViewById(R.id.rec_text);
-        rec_weibaike =  findViewById(R.id.rec_weibaike);
+        rec_text = findViewById(R.id.rec_text);
+        rec_weibaike = findViewById(R.id.rec_weibaike);
         song = findViewById(R.id.song);
         home_Ttime.setText(DataString.StringData());
         initFilterBureau();
@@ -81,7 +79,7 @@ public class recListActivity extends AppCompatActivity {
                 }
             }
         });
-        getDataFirst(0,0);
+        getDataFirst(0, 0);
 
         rec_text.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,9 +118,12 @@ public class recListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 pagesize = pagesize - 8;
                 if (pagesize < 0) {
+                    pagesize = 0;
                     return;
+                } else {
+                    getDataFirst(pageid, pagesize);
                 }
-                getDataFirst(pageid, pagesize);
+
             }
         });
     }
@@ -150,11 +151,8 @@ public class recListActivity extends AppCompatActivity {
     }
 
     private void getDataFirst(int topid, int page) {
-//         List<colMBean> colMBeanList1 = new ArrayList<colMBean>();
-//        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList1));
-//        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList));
-//        dataColAdapter.notifyDataSetChanged();
-        int tempSize1 = infoDataList.size();
+        colMBeanList.clear();
+        dataColAdapter.notifyDataSetChanged();
         infoDataList = DataSupport.where("topId=?", meunList.get(topid)).limit(8).offset(page).find(infoData.class);
         if (infoDataList == null) {
             return;
@@ -163,13 +161,10 @@ public class recListActivity extends AppCompatActivity {
             colMBean mhomeBean = new colMBean();
             mhomeBean.setTitle(infoDataList.get(i).getTitle());
             mhomeBean.setThumbnail_Url(infoDataList.get(i).getThumbnail_Url());
+            mhomeBean.setTopId(infoDataList.get(i).getTopId());
+            mhomeBean.setAudio_url(infoDataList.get(i).getAudio_url());
             colMBeanList.add(mhomeBean);
         }
-        dataColAdapter.notifyDataSetChanged();
-    }
-    private void clearData(){
-                 List<colMBean> colMBeanList1 = new ArrayList<colMBean>();
-        rvData.setAdapter(dataColAdapter = new NavMovieColAdapter(getApplicationContext(), colMBeanList1));
         dataColAdapter.notifyDataSetChanged();
     }
 

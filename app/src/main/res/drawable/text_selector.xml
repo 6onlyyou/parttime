@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_window_focused="false" android:state_enabled="true"
-        android:drawable="@mipmap/icon_item_active_bg" />
+        android:drawable="@mipmap/icon_item_bg2" />
 
     <item android:state_pressed="true"
         android:drawable="@mipmap/icon_item_bg2" />
