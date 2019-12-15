@@ -11,13 +11,14 @@
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/pll_larger"
         android:layout_width="95dp"
-        android:layout_height="78dp"
+        android:layout_height="84dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="95dp"
-            android:layout_height="78dp">
+            android:layout_height="78dp"
+            android:layout_marginBottom="6dp">
         <com.lx.lxyd.view.RoundImageView
             android:id="@+id/col_img"
             android:layout_width="95dp"
