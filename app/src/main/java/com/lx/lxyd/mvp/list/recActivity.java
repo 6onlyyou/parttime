@@ -68,9 +68,6 @@ public class recActivity extends AppCompatActivity {
     private List<colMBean> colMBeanList = new ArrayList<colMBean>();
     private List<hisMBean> hisMBeanList = new ArrayList<hisMBean>();
     private String savePath;
-    private String[] str = {"首页", "收藏", "记录"};
-    private int[] ints = {R.mipmap.home_ico, R.mipmap.home_col, R.mipmap.home_tim};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +145,7 @@ public class recActivity extends AppCompatActivity {
             }
         });
         home_Ttime.setText(DataString.StringData());
-        if (SPUtil.getInt(recActivity.this, "first", 0) == 1) {
+        if (SPUtil.getInt(recActivity.this, "first", 0) == 0) {
             initData();
         } else {
             DataSupport.deleteAll(allListData.class);
