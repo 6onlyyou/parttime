@@ -145,7 +145,7 @@ public class recActivity extends AppCompatActivity {
             }
         });
         home_Ttime.setText(DataString.StringData());
-        if (SPUtil.getInt(recActivity.this, "first", 0) == 0) {
+        if (SPUtil.getInt(recActivity.this, "first", 0) == 1) {
             initData();
         } else {
             DataSupport.deleteAll(allListData.class);
