@@ -127,12 +127,13 @@ public class PlayerActivity extends AppCompatActivity {
 
             case KeyEvent.KEYCODE_DPAD_LEFT: //向左键
                 //跳转制定位置播放
-                JZMediaManager.seekTo(jzVideoPlayerStandard.getCurrentPositionWhenPlaying()+5000);
+                JZMediaManager.seekTo(jzVideoPlayerStandard.getCurrentPositionWhenPlaying()-5000);
 
                 break;
 
             case KeyEvent.KEYCODE_DPAD_RIGHT:  //向右键
-                JZMediaManager.seekTo(jzVideoPlayerStandard.getCurrentPositionWhenPlaying()-5000);
+                JZMediaManager.seekTo(jzVideoPlayerStandard.getCurrentPositionWhenPlaying()+5000);
+
                 break;
 
             case KeyEvent.KEYCODE_INFO:    //info键

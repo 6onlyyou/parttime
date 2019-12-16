@@ -234,7 +234,7 @@ public class recActivity extends AppCompatActivity {
         }
     }
 
-
+    private List<String> stringList2 = new ArrayList<>();
     private void initData() {
         Window window = this.getWindow();
         ViewGroup mContentView = (ViewGroup) this.findViewById(Window.ID_ANDROID_CONTENT);
@@ -257,7 +257,7 @@ public class recActivity extends AppCompatActivity {
 
         GridLayoutManager focusGridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         rvData.setLayoutManager(focusGridLayoutManager);
-        rvData.setAdapter(dataAdapter = new NavMovieAdapter(this, stringList));
+        rvData.setAdapter(dataAdapter = new NavMovieAdapter(this, stringList2));
         rvData.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -276,7 +276,8 @@ public class recActivity extends AppCompatActivity {
             mhomeBean.setMainName(maintainDataList.get(i).getMainName());
             stringList.add(mhomeBean);
         }
-        dataAdapter.notifyItemRangeInserted(tempSize, stringList.size() - tempSize);
+        stringList2.add("测试测试测试测");
+        dataAdapter.notifyItemRangeInserted(tempSize, stringList2.size() - tempSize);
 
 
         GridLayoutManager focusGridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 5);
