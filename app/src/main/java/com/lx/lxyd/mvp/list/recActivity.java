@@ -87,6 +87,42 @@ public class recActivity extends AppCompatActivity {
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
+        button1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    //获得焦点
+                    homeLa.setVisibility(View.VISIBLE);
+                    colLa.setVisibility(View.GONE);
+                    hisLa.setVisibility(View.GONE);
+                } else {
+                }
+            }
+        });
+        button2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    //获得焦点
+                    homeLa.setVisibility(View.GONE);
+                    colLa.setVisibility(View.VISIBLE);
+                    hisLa.setVisibility(View.GONE);
+                } else {
+                }
+            }
+        });
+        button3.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    //获得焦点
+                    homeLa.setVisibility(View.GONE);
+                    colLa.setVisibility(View.GONE);
+                    hisLa.setVisibility(View.VISIBLE);
+                } else {
+                }
+            }
+        });
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
