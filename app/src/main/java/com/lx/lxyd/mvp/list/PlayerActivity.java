@@ -1,6 +1,7 @@
 package com.lx.lxyd.mvp.list;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -166,5 +167,11 @@ public class PlayerActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
 
     }
-
+    @Override
+    protected void onResume() {
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        super.onResume();
+    }
 }
