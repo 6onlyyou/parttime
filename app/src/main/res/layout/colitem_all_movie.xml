@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/pfl_container"
+    android:id="@+id/pfl_container1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/state_movie"
@@ -19,7 +19,7 @@
             android:layout_height="78dp"
            >
         <com.lx.lxyd.view.RoundImageView
-            android:id="@+id/col_img"
+            android:id="@+id/col_img1"
             android:layout_width="95dp"
             android:layout_height="78dp"
             android:scaleType="centerCrop"
