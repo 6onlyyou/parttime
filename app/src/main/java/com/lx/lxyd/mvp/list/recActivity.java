@@ -157,7 +157,7 @@ public class recActivity extends AppCompatActivity {
                     .subscribe(new Consumer<ResponseBean<ArrayList<homeData>>>() {
                         @Override
                         public void accept(ResponseBean<ArrayList<homeData>> homeDataList) throws Exception {
-                            savePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/";
                             ArrayList<maintainData> maintainDataList = new ArrayList();
                             ArrayList<allListData> allListDataList = new ArrayList();
                             ArrayList<infoData> infoDataList = new ArrayList();
