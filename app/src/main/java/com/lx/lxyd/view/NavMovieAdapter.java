@@ -26,9 +26,9 @@ import java.util.List;
 
 public class NavMovieAdapter extends RecyclerView.Adapter<NavMovieHolder> {
     protected final Context context;
-    private final List<String> stringList;
+    private final List<homeBean> stringList;
 
-    public NavMovieAdapter(Context context, List<String> objectList) {
+    public NavMovieAdapter(Context context, List<homeBean> objectList) {
         this.stringList = objectList;
         this.context = context;
     }
@@ -45,11 +45,11 @@ public class NavMovieAdapter extends RecyclerView.Adapter<NavMovieHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, recListActivity.class);
-//                i.putExtra("topid",stringList.get(position).getMainId());
+                i.putExtra("topid",stringList.get(position).getMainId());
                 context.startActivity(i);
             }
         });
-        holder.tvTitle.setText(stringList.get(position));
+        holder.tvTitle.setText(stringList.get(position).getMainName());
         holder.pflContainer.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
