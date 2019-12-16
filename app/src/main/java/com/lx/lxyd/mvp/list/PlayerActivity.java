@@ -97,7 +97,8 @@ public class PlayerActivity extends AppCompatActivity {
                 break;
 
             case KeyEvent.KEYCODE_BACK:    //返回键
-
+                JZVideoPlayer.releaseAllVideos();
+                finish();
                 return true;   //这里由于break会退出，所以我们自己要处理掉 不返回上一层
 
             case KeyEvent.KEYCODE_SETTINGS: //设置键

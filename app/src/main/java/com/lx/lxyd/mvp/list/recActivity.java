@@ -329,10 +329,10 @@ public class recActivity extends AppCompatActivity {
             mhomeBean.setCreate_time(hisBeanList.get(i).getCreate_time());
             hisMBeanList.add(mhomeBean);
         }
+
         dataHisAdapter.notifyItemRangeInserted(tempSize2, hisMBeanList.size() - tempSize);
 
     }
-
 
     private Handler mHandler = new Handler() {
         @Override
