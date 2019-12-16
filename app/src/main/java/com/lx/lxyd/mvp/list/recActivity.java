@@ -1,10 +1,14 @@
 package com.lx.lxyd.mvp.list;
 
+import android.Manifest;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,11 +72,22 @@ public class recActivity extends AppCompatActivity {
     private List<colMBean> colMBeanList = new ArrayList<colMBean>();
     private List<hisMBean> hisMBeanList = new ArrayList<hisMBean>();
     private String savePath;
+    private static String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE};    //请求状态码
+    private static int REQUEST_PERMISSION_CODE = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         new TimeThread().start();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, REQUEST_PERMISSION_CODE);
+            }
+        }
+
         home_Ttim = (TextView) findViewById(R.id.home_Ttim);
         home_Ttime = (TextView) findViewById(R.id.home_Ttime);
         rvData = (FocusRecyclerView) findViewById(R.id.rv_data);
@@ -157,7 +172,7 @@ public class recActivity extends AppCompatActivity {
                     .subscribe(new Consumer<ResponseBean<ArrayList<homeData>>>() {
                         @Override
                         public void accept(ResponseBean<ArrayList<homeData>> homeDataList) throws Exception {
-                            savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/Camera/";
+                            savePath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/";
                             ArrayList<maintainData> maintainDataList = new ArrayList();
                             ArrayList<allListData> allListDataList = new ArrayList();
                             ArrayList<infoData> infoDataList = new ArrayList();
