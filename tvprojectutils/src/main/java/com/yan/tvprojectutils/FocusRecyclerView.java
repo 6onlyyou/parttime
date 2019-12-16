@@ -15,9 +15,8 @@ import android.view.View;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by yan on 2017/8/4.
- */
+
+
 public class FocusRecyclerView extends RecyclerView {
     private boolean needGetDownView;
     private boolean needGetUpView;
