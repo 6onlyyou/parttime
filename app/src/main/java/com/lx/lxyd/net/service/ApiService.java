@@ -14,7 +14,7 @@ import retrofit2.http.GET;
  */
 
 public interface ApiService {
-    @GET("http://app.chnlongjing.com/zhonglian/api/findResources?size=6")
+    @GET("zhonglian/api/findResources?size=6")
     Observable<ResponseBean<ArrayList<homeData>>> getData();
 
 }
